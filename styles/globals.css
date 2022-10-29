@@ -24,3 +24,24 @@ a {
     background: black;
   }
 }
+.MuiSlider-rail {
+  height: 21px;
+  background: #ffd748;
+  opacity: 1;
+}
+.MuiSlider-thumb {
+  background: #104987;
+}
+.MuiSlider-track {
+  display: none;
+}
+.MuiSlider-mark {
+  display: none;
+}
+.MuiSlider-markLabel {
+  font-size: 24px;
+  font-weight: 700;
+  font-family: "Calibri";
+  color: #4f4b61;
+  top: -30px;
+}
