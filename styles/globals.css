@@ -19,29 +19,56 @@ a {
   html {
     color-scheme: dark;
   }
+
   body {
     color: white;
     background: black;
   }
 }
+
 .MuiSlider-rail {
   height: 21px;
   background: #ffd748;
   opacity: 1;
 }
+
 .MuiSlider-thumb {
   background: #104987;
 }
+
 .MuiSlider-track {
   display: none;
 }
+
 .MuiSlider-mark {
   display: none;
 }
+
 .MuiSlider-markLabel {
   font-size: 24px;
   font-weight: 700;
   font-family: "Calibri";
   color: #4f4b61;
   top: -30px;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgb(53, 59, 138);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #ffd748;
+  border-radius: 20px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #c2a335;
 }

@@ -11,6 +11,7 @@ import AscDesc, {
 import { countMarks, valueMarks } from "./HomeData";
 import StartGameButton from "../../components/StartGameButton/StartGameButton";
 import { CountContext, ValueContext, DirectionContext } from "../../Context";
+import MainGameBoard from "../../components/Game";
 
 import "rsuite/dist/rsuite.min.css";
 
@@ -56,6 +57,7 @@ const Home: React.FC = () => {
   const { selectedValue, setSelectedValue } = useContext<any>(ValueContext);
   const { selectedDirection, setSelectedDirection } =
     useContext<any>(DirectionContext);
+  const [gameStarted, setGameStarted] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -76,7 +78,11 @@ const Home: React.FC = () => {
   }
 
   function handleStartGame(type: void) {
-    // router.push("/Game");
+    setGameStarted(true);
+  }
+
+  if (gameStarted) {
+    return <MainGameBoard />;
   }
 
   return (
@@ -130,9 +136,8 @@ const Home: React.FC = () => {
             selectedDirection={selectedDirection}
           />
         </Box>
-        <Link href="/Game">
-          <StartGameButton onClick={handleStartGame} />
-        </Link>
+
+        <StartGameButton onClick={handleStartGame} />
       </GameControls>
     </Container>
   );
