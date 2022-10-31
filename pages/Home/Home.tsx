@@ -1,25 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useRouter } from "next/router";
 import styled from "@emotion/styled";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
+import Link from "next/link";
 
 import AscDesc, {
   DIRECTIONS,
 } from "../../components/AscDescContainer/AscDescContainer";
 import { countMarks, valueMarks } from "./HomeData";
 import StartGameButton from "../../components/StartGameButton/StartGameButton";
+import { CountContext, ValueContext, DirectionContext } from "../../Context";
 
 import "rsuite/dist/rsuite.min.css";
 
-const HomeContainer = styled.div({
+const Container = styled.div({
   backgroundImage: `url(/Images/1.png)`,
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
   width: "100%",
-  height: "100vh",
+  minHeight: "100vh",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+  padding: "91px 0",
 });
 
 const GameControls = styled.div({
@@ -44,14 +48,16 @@ const GameControls = styled.div({
 export interface SingleMark {
   value: number;
   label: string;
+  type: number;
 }
 
 const Home: React.FC = () => {
-  const [selectedValue, setSelectedValue] = useState<SingleMark | undefined>(
-    undefined
-  );
-  const [selectedCount, setSelectedCount] = useState<number | number[]>(1);
-  const [direction, setDirection] = useState<string>(DIRECTIONS.ASC);
+  const { selectedCount, setSelectedCount } = useContext<any>(CountContext);
+  const { selectedValue, setSelectedValue } = useContext<any>(ValueContext);
+  const { selectedDirection, setSelectedDirection } =
+    useContext<any>(DirectionContext);
+
+  const router = useRouter();
 
   function valuetext(value: number) {
     return `${value}°C`;
@@ -69,10 +75,12 @@ const Home: React.FC = () => {
     setSelectedValue(selectedVal);
   }
 
-  function handleStartGame() {}
+  function handleStartGame(type: void) {
+    // router.push("/Game");
+  }
 
   return (
-    <HomeContainer>
+    <Container>
       <GameControls>
         <Box>
           <Box
@@ -86,7 +94,7 @@ const Home: React.FC = () => {
               <Slider
                 onChange={(event, value, thumb) => setSelectedCount(value)}
                 aria-label="Small steps"
-                defaultValue={1}
+                defaultValue={2}
                 step={1}
                 getAriaValueText={valuetext}
                 marks={countMarks}
@@ -117,12 +125,16 @@ const Home: React.FC = () => {
               />
             </Box>
           </Box>
-          <AscDesc onClick={setDirection} selected={direction} />
+          <AscDesc
+            onClick={setSelectedDirection}
+            selectedDirection={selectedDirection}
+          />
         </Box>
-
-        <StartGameButton onClick={handleStartGame} />
+        <Link href="/Game">
+          <StartGameButton onClick={handleStartGame} />
+        </Link>
       </GameControls>
-    </HomeContainer>
+    </Container>
   );
 };
 

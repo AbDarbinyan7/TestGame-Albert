@@ -3,11 +3,11 @@ import styled from "@emotion/styled";
 
 interface AskDescInterface {
   onClick: any;
-  selected: string;
+  selectedDirection: string;
 }
 
 interface AskDescButtonInterace {
-  selected: Boolean;
+  selectedDirection: Boolean;
 }
 
 export const DIRECTIONS = {
@@ -29,26 +29,25 @@ const Button = styled.button((props: AskDescButtonInterace) => ({
   color: "#423F45",
   padding: "0 21px",
   marginTop: "50px",
-  opacity: props.selected ? "1" : "0.5",
+  opacity: props.selectedDirection ? "1" : "0.5",
 }));
 
 const AscDesc: React.FC<AskDescInterface> = ({
   onClick,
-  selected,
+  selectedDirection,
 }: AskDescInterface) => {
   return (
     <AscDescContainer>
       <Button
-        selected={selected === DIRECTIONS.ASC}
+        selectedDirection={selectedDirection === DIRECTIONS.ASC}
         onClick={() => onClick(DIRECTIONS.ASC)}
       >
         По возрастанию
       </Button>
       <Button
-        selected={selected === DIRECTIONS.DESC}
+        selectedDirection={selectedDirection === DIRECTIONS.DESC}
         onClick={() => onClick(DIRECTIONS.DESC)}
       >
-        {" "}
         По убыванию
       </Button>
     </AscDescContainer>
