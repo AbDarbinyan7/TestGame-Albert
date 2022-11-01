@@ -10,6 +10,11 @@ export default function Home() {
         <title>Game - Find the right place</title>
         <meta name="description" content="Play and enjoy the game" />
         <link rel="icon" href="/favicon.ico" />
+
+        <script
+          src="https://kit.fontawesome.com/fd2210338a.js"
+          crossOrigin="anonymous"
+        ></script>
       </Head>
 
       <GameStart />

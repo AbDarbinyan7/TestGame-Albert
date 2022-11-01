@@ -144,7 +144,7 @@ const NumbersBoxContainer = styled.div((props: any) => ({
   margin: "auto",
   background: "transparent",
 
-  [`> .item`]: {
+  [`.item`]: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -161,20 +161,20 @@ const NumbersBoxContainer = styled.div((props: any) => ({
         " 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000",
     },
   },
-  [`> .item-1`]: {
+  [`.item-container-1`]: {
     marginBottom: 70,
     marginRight: 60,
   },
-  [`> .item-2`]: {
+  [`.item-container-2`]: {
     marginBottom: 170,
   },
-  [`> .item-3`]: {
+  [`.item-container-3`]: {
     marginTop: 70,
   },
-  [`> .item-4`]: {
+  [`.item-container-4`]: {
     marginBottom: 170,
   },
-  [`> .item-5`]: {
+  [`.item-container-5`]: {
     marginBottom: 20,
     marginLeft: 70,
   },
@@ -347,8 +347,8 @@ const Game: React.FC = () => {
 
   function handleFindTheme() {
     const RandomInitial: number = Math.floor(Math.random() * 4) + 1;
-    setSelectedTheme(GAME_THEMES[`theme${RandomInitial}`]);
-    // setSelectedTheme(GAME_THEMES[`theme1`]);
+    // setSelectedTheme(GAME_THEMES[`theme${RandomInitial}`]);
+    setSelectedTheme(GAME_THEMES[`theme3`]);
   }
 
   const handleDrop = useCallback(
@@ -368,6 +368,7 @@ const Game: React.FC = () => {
 
   function handlePlaySliderMoveAudio(): void {
     if (successAudio) {
+      successAudio.volume = 0.3;
       successAudio.pause();
       successAudio.currentTime = 0;
       successAudio?.play();

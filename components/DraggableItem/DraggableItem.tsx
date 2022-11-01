@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import styled from "@emotion/styled";
 import { memo } from "react";
 import { useDrag } from "react-dnd";
 
@@ -14,12 +15,52 @@ const style: CSSProperties = {
   float: "left",
 };
 
-interface DraggableItemInterface {
-  selectedTheme: SingleThemeInterface | undefined;
+interface BoxInterface {
+  selectedTheme: any;
+  isDropped: any;
   i: number;
-  board: SingleBoardInterface;
-  boards: SingleBoardInterface[];
 }
+
+const Wrapper = styled.div(() => ({
+  position: "relative",
+
+  [`.flowers-theme-branch-1`]: {
+    top: "83%",
+    left: "114%",
+  },
+  [`.flowers-theme-branch-2`]: {
+    top: "78%",
+    left: "78%",
+  },
+  [`.flowers-theme-branch-3`]: {
+    top: "70%",
+    left: "67%",
+  },
+  [`.flowers-theme-branch-4`]: {
+    top: "82%",
+    left: "50%",
+  },
+  [`.flowers-theme-branch-5`]: {
+    top: "82%",
+    left: "-12%",
+  },
+  [`.christmas-theme-branch`]: {
+    top: "-22px",
+    left: "53%",
+  },
+}));
+
+const DraggableBox = styled.div((props: BoxInterface) => ({
+  backgroundImage: props.isDropped
+    ? "initial"
+    : `url(/Images/${props.selectedTheme?.folderName}/Icon${props.i + 1}.png)`,
+  backgroundSize: "contain",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "center center",
+  transform: "translate(0,0)",
+  cursor: !props.isDropped ? "grab" : "initial",
+  position: "relative",
+}));
 
 const DraggableItem = memo(function Box({
   type = "",
@@ -41,6 +82,7 @@ const DraggableItem = memo(function Box({
     }),
     [board, type]
   );
+  console.log(board, "board");
 
   function dragOverHandler(
     e: any,
@@ -54,11 +96,12 @@ const DraggableItem = memo(function Box({
 
   function dragStartHendler(e: any, boardData: SingleBoardInterface) {
     let audio = new Audio("Sounds/grab-sound.mp3");
-
     audio.play();
   }
 
-  function dragEndHendler(e: any) {}
+  function dragEndHendler(e: any) {
+    console.log("here i am");
+  }
 
   function dropHandler(
     e: any,
@@ -69,29 +112,47 @@ const DraggableItem = memo(function Box({
   }
 
   return (
-    <div
-      ref={!isDropped ? drag : null}
-      data-testid="box"
-      draggable={true}
-      onDragStart={(e) => dragStartHendler(e, board)}
-      onDragEnd={(e) => dragEndHendler(e)}
-      onDrop={(e) => dropHandler(e, boards, board)}
+    <Wrapper
       style={{
-        backgroundImage: isDropped
-          ? "initial"
-          : `url(/Images/${selectedTheme?.folderName}/Icon${i + 1}.png)`,
-        backgroundSize: "contain",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center center",
-        transform: "translate(0,0)",
-        cursor: !isDropped ? "grab" : "initial",
-        opacity,
+        position: "relative",
       }}
-      className={`item item-${i + 1}`}
-      key={i.toString()}
+      className={`item-container item-container-${i + 1}`}
     >
-      {!isDropped && <h1>{board.value}</h1>}
-    </div>
+      <DraggableBox
+        ref={!isDropped ? drag : null}
+        data-testid="box"
+        draggable={true}
+        onDragStart={(e) => dragStartHendler(e, board)}
+        onDragEnd={(e) => dragEndHendler(e)}
+        onDrop={(e) => dropHandler(e, boards, board)}
+        className={`item item-${i + 1}`}
+        key={i.toString()}
+        selectedTheme={selectedTheme}
+        isDropped={isDropped}
+        i={i}
+        style={{
+          opacity,
+        }}
+      >
+        {!isDropped && <h1>{board.value}</h1>}
+      </DraggableBox>
+      {selectedTheme.name === "flowers-theme" ||
+      selectedTheme.name === "christmas-theme" ? (
+        <img
+          className={`${selectedTheme.name}-branch ${
+            selectedTheme.name
+          }-branch-${i + 1}`}
+          style={{
+            position: "absolute",
+            transform: "translateX(-50%)",
+          }}
+          src={`/Images/${selectedTheme.folderName}/branch${i + 1}.png`}
+          alt=""
+        ></img>
+      ) : (
+        ""
+      )}
+    </Wrapper>
   );
 });
 

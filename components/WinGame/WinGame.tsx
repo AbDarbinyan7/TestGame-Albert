@@ -47,7 +47,7 @@ const WinGame = () => {
   const { selectedDirection, setSelectedDirection } =
     useContext<any>(DirectionContext);
   const { gameStarted, setGameStarted } = useContext<any>(GameStartedContext);
-  let audio = new Audio("Sounds/winner-sound.mp3");
+  let audio = new Audio("Sounds/claps-sound.mp3");
   useEffect(() => {
     playWinnerMusic();
 
@@ -59,6 +59,7 @@ const WinGame = () => {
 
   function playWinnerMusic() {
     audio.play();
+    audio.volume = 0.3;
   }
 
   function handleRestartGame() {
