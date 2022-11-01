@@ -16,7 +16,7 @@ import { DIRECTIONS } from "../AscDescContainer/AscDescContainer";
 const ModalContainer = styled.div(() => ({
   width: "100%",
   background: "#20153699 70%",
-  position: "absolute",
+  position: "fixed",
   top: "0",
   bottom: "0",
   zIndex: "999999",
@@ -66,9 +66,12 @@ const WinGame = () => {
   );
 
   useEffect(() => {
+    document.body.style.overflow = "hidden";
     playWinnerMusic();
 
     return () => {
+      document.body.style.overflow = "initial";
+
       if (audio) {
         audio.pause();
         audio.currentTime = 0;
