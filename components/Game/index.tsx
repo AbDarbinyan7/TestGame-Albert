@@ -347,8 +347,8 @@ const Game: React.FC = () => {
 
   function handleFindTheme() {
     const RandomInitial: number = Math.floor(Math.random() * 4) + 1;
-    // setSelectedTheme(GAME_THEMES[`theme${RandomInitial}`]);
-    setSelectedTheme(GAME_THEMES[`theme3`]);
+    setSelectedTheme(GAME_THEMES[`theme${RandomInitial}`]);
+    // setSelectedTheme(GAME_THEMES[`theme3`]);
   }
 
   const handleDrop = useCallback(
@@ -393,7 +393,6 @@ const Game: React.FC = () => {
                 type={board.value.toString()}
                 i={index}
                 selectedTheme={selectedTheme}
-                boards={boards}
                 board={board}
                 isDropped={currentDroppedBoard?.isDropped}
               />

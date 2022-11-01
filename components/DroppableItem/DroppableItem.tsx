@@ -1,11 +1,8 @@
 import { memo } from "react";
 import { useDrop } from "react-dnd";
 
-interface DroppableItemInterface {}
-
 const DroppableItem = memo(function DroppableItem({
   accept = [],
-  lastDroppedItem,
   onDrop,
   item,
   selectedTheme,
@@ -18,6 +15,7 @@ const DroppableItem = memo(function DroppableItem({
       canDrop: monitor.canDrop(),
     }),
   });
+
   const isActive = isOver && canDrop;
   let backgroundColor = "transparent";
   let borderRadius = "initial";
@@ -30,11 +28,6 @@ const DroppableItem = memo(function DroppableItem({
   return (
     <div
       ref={drop}
-      onDragOver={(e) => {}}
-      onDragLeave={(e) => {}}
-      onDragStart={(e) => {}}
-      onDragEnd={(e) => {}}
-      onDrop={(e) => {}}
       style={{
         width: 131,
         height: 131,

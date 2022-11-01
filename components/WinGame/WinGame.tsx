@@ -39,6 +39,16 @@ const Modal = styled.div(() => ({
   textAlign: "center",
   padding: "40px",
   position: "relative",
+
+  [`button`]: {
+    fontFamily: "Calibri",
+    fontWeight: "600",
+    fontSize: "36",
+  },
+  [`p`]: {
+    fontFamily: "Calibri",
+    lineHeight: "45px",
+  },
 }));
 
 const WinGame = () => {
@@ -88,6 +98,8 @@ const WinGame = () => {
           <p
             style={{
               maxWidth: "520px",
+              fontFamily: "Calibri",
+              fontWeight: "400",
             }}
           >
             Молодец! Ты успешно справился c заданием!

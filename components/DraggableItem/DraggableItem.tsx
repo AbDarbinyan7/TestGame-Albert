@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import { useState } from "react";
 import styled from "@emotion/styled";
 import { memo } from "react";
 import { useDrag } from "react-dnd";
@@ -66,10 +67,13 @@ const DraggableItem = memo(function Box({
   type = "",
   i,
   selectedTheme,
-  boards,
   board,
   isDropped,
 }: any) {
+  const [audio] = useState(
+    typeof Audio !== "undefined" && new Audio("Sounds/fail-sound.mp3")
+  );
+
   const [{ opacity }, drag] = useDrag(
     () => ({
       type,
@@ -82,33 +86,29 @@ const DraggableItem = memo(function Box({
     }),
     [board, type]
   );
-  console.log(board, "board");
-
-  function dragOverHandler(
-    e: any,
-    boards: SingleBoardInterface[],
-    boardData: SingleBoardInterface
-  ) {
-    e.preventDefault();
-  }
-
-  function dragLeaveHandler(e: any) {}
 
   function dragStartHendler(e: any, boardData: SingleBoardInterface) {
     let audio = new Audio("Sounds/grab-sound.mp3");
     audio.play();
   }
 
-  function dragEndHendler(e: any) {
-    console.log("here i am");
+  function dragEndHendler(e: any, board: SingleBoardInterface) {
+    if (!isDropped) {
+      handlePlaySliderMoveAudio();
+    }
   }
 
-  function dropHandler(
-    e: any,
-    boards: SingleBoardInterface[],
-    boardData: SingleBoardInterface
-  ) {
+  function dropHandler(e: any) {
     e.preventDefault();
+  }
+
+  function handlePlaySliderMoveAudio(): void {
+    if (audio) {
+      audio.pause();
+      audio.volume = 0.4;
+      audio.currentTime = 0;
+      audio?.play();
+    }
   }
 
   return (
@@ -123,8 +123,8 @@ const DraggableItem = memo(function Box({
         data-testid="box"
         draggable={true}
         onDragStart={(e) => dragStartHendler(e, board)}
-        onDragEnd={(e) => dragEndHendler(e)}
-        onDrop={(e) => dropHandler(e, boards, board)}
+        onDragEnd={(e) => dragEndHendler(e, board)}
+        onDrop={(e) => dropHandler(e)}
         className={`item item-${i + 1}`}
         key={i.toString()}
         selectedTheme={selectedTheme}
