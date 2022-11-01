@@ -1,19 +1,13 @@
 import styled from "@emotion/styled";
-import React, {
-  useState,
-  useContext,
-  useEffect,
-  useRef,
-  useCallback,
-} from "react";
-import { useDrop } from "react-dnd";
+import React, { useState, useContext, useEffect, useCallback } from "react";
 import { CountContext, DirectionContext, ValueContext } from "../../Context";
-import { DIRECTIONS } from "../../components/AscDescContainer/AscDescContainer";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+
+import { DIRECTIONS } from "../../components/AscDescContainer/AscDescContainer";
 import DraggablItem from "../../components/DraggableItem/DraggableItem";
 import DroppableItem from "../../components/DroppableItem/DroppableItem";
-import Example from "./example";
+import WinGame from "../WinGame/WinGame";
 
 interface SelectedThemeInterface {
   [key: string]: SingleThemeInterface;
@@ -187,9 +181,8 @@ const NumbersBoxContainer = styled.div((props: any) => ({
 }));
 
 export interface SingleBoardInterface {
-  board: number;
   id: number;
-  number: number;
+  value: number | string;
   isDropped?: boolean;
 }
 
@@ -197,22 +190,18 @@ const Game: React.FC = () => {
   const [selectedTheme, setSelectedTheme] = useState<
     SingleThemeInterface | undefined
   >(undefined);
-  const [generatedNumbers, setGeneratedNumbers] = useState<number[]>([]);
   const [boards, setBoards] = useState<SingleBoardInterface[]>([]);
   const [droppedBoards, setDroppedBoards] = useState<SingleBoardInterface[]>(
     []
   );
+  const [IsWinGame, setIsWinGame] = useState<boolean>(false);
 
   const { selectedCount, setSelectedCount } = useContext<any>(CountContext);
   const { selectedValue, setSelectedValue } = useContext<any>(ValueContext);
   const { selectedDirection, setSelectedDirection } =
     useContext<any>(DirectionContext);
-  // const [{ isOver }, collectedProps, drop]: any = useDrop(() => ({
-  //   accept: "image",
-  // }));
-  // console.log(collectedProps, " collectedProps");
 
-  const itemsRef = useRef<any>([]);
+  const Ruletters = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЫЬЭЮЯ";
 
   useEffect(() => {
     if (droppedBoards.length) {
@@ -226,22 +215,29 @@ const Game: React.FC = () => {
 
   const isGameOver = () => {
     const hasUnCompletedBoard = droppedBoards.find((b) => !b.isDropped);
-
     if (!hasUnCompletedBoard) {
-      alert("Won");
+      setIsWinGame(true);
     }
   };
 
   useEffect(() => {
     let newArr: any = [];
     if (selectedCount) {
+      // Generate for numbers
       if (selectedValue.type !== 0) {
         for (let i = 0; i < selectedCount; i++) {
-          let newValue = onGenerateBoard(newArr, i);
+          let newValue = onGenerateBoardForNumbers(newArr, i, false);
+          newArr.push(newValue);
+        }
+        // Generate for letters
+      } else {
+        for (let i = 0; i < selectedCount; i++) {
+          let newValue = onGenerateBoardForLetters(newArr, i);
           newArr.push(newValue);
         }
       }
     }
+
     setBoards(newArr);
 
     let arrayForDroppedBoards = newArr.map((arr: SingleBoardInterface) => {
@@ -252,20 +248,41 @@ const Game: React.FC = () => {
     });
 
     function compare(a: any, b: any) {
-      if (selectedDirection === DIRECTIONS.ASC) {
-        if (a.number < b.number) {
-          return -1;
+      // IF USER SELECTED NUMBER
+      if (selectedValue.type === 1) {
+        if (selectedDirection === DIRECTIONS.ASC) {
+          if (a.value < b.value) {
+            return -1;
+          }
+          if (a.value > b.value) {
+            return 1;
+          }
         }
-        if (a.number > b.number) {
-          return 1;
+        if (selectedDirection === DIRECTIONS.DESC) {
+          if (a.value > b.value) {
+            return -1;
+          }
+          if (a.value < b.value) {
+            return 1;
+          }
         }
-      }
-      if (selectedDirection === DIRECTIONS.DESC) {
-        if (a.number > b.number) {
-          return -1;
+        // IF USER SELECTED LETTER
+      } else {
+        if (selectedDirection === DIRECTIONS.ASC) {
+          if (a.value.charCodeAt() < b.value.charCodeAt()) {
+            return -1;
+          }
+          if (a.value.charCodeAt() > b.value.charCodeAt()) {
+            return 1;
+          }
         }
-        if (a.number < b.number) {
-          return 1;
+        if (selectedDirection === DIRECTIONS.DESC) {
+          if (a.value.charCodeAt() > b.value.charCodeAt()) {
+            return -1;
+          }
+          if (a.value.charCodeAt() < b.value.charCodeAt()) {
+            return 1;
+          }
         }
       }
 
@@ -273,26 +290,49 @@ const Game: React.FC = () => {
     }
 
     arrayForDroppedBoards = arrayForDroppedBoards.sort(compare);
-
     setDroppedBoards(arrayForDroppedBoards);
   }, []);
 
-  function onGenerateBoard(arr: any, i: number) {
+  function onGenerateBoardForLetters(arr: any, i: number) {
     let newObj: SingleBoardInterface | null = null;
     onCheckHaveDublicate();
 
     function onCheckHaveDublicate(): void {
-      let RandomNumber = generateRandomNumber(selectedValue.label);
-      let hasDublicate = arr.find((el: any) => el.number === RandomNumber);
+      let RandomNumber = generateRandomNumber("31");
+      const selectedLetter = Ruletters[RandomNumber];
+      let hasDublicate = arr.find((el: any) => el.value === selectedLetter);
       if (hasDublicate) {
         onCheckHaveDublicate();
         return;
       }
 
       newObj = {
-        board: i,
         id: i,
-        number: RandomNumber,
+        value: Ruletters[RandomNumber],
+      };
+    }
+    return newObj;
+  }
+
+  function onGenerateBoardForNumbers(
+    arr: any,
+    i: number,
+    isWithLetters: boolean = false
+  ) {
+    let newObj: SingleBoardInterface | null = null;
+    onCheckHaveDublicate();
+
+    function onCheckHaveDublicate(): void {
+      let RandomNumber = generateRandomNumber(selectedValue.label);
+      let hasDublicate = arr.find((el: any) => el.value === RandomNumber);
+      if (hasDublicate) {
+        onCheckHaveDublicate();
+        return;
+      }
+
+      newObj = {
+        id: i,
+        value: RandomNumber,
       };
     }
     return newObj;
@@ -318,23 +358,8 @@ const Game: React.FC = () => {
       });
 
       setDroppedBoards(newDroppedBoards);
-
-      // const { name } = item;
-      // setDroppedBoxNames(
-      //   update(droppedBoxNames, name ? { $push: [name] } : { $push: [] })
-      // );
-      // setDustbins(
-      //   update(dustbins, {
-      //     [index]: {
-      //       lastDroppedItem: {
-      //         $set: item,
-      //       },
-      //     },
-      //   })
-      // );
     },
     []
-    // [droppedBoxNames, dustbins]
   );
 
   return (
@@ -343,18 +368,16 @@ const Game: React.FC = () => {
         backgroundColor={selectedTheme?.backgroundColor || "#fff"}
         className={selectedTheme?.name}
       >
-        {/* <Example /> */}
+        {IsWinGame && <WinGame />}
         <NumbersBoxContainer>
           {boards.map((board, index) => {
             const currentDroppedBoard = droppedBoards.find(
               (b) => b.id === board.id
             );
-            console.log(currentDroppedBoard, " currentDroppedBoard");
-
             return (
               <DraggablItem
                 key={index.toString()}
-                type={board.number.toString()}
+                type={board.value.toString()}
                 i={index}
                 selectedTheme={selectedTheme}
                 boards={boards}
@@ -400,7 +423,7 @@ const Game: React.FC = () => {
           >
             {droppedBoards.map((board, i) => (
               <DroppableItem
-                accept={[board.number.toString()]}
+                accept={[board.value.toString()]}
                 key={i.toString()}
                 onDrop={(item: any) => handleDrop(i, item, droppedBoards)}
                 item={board}

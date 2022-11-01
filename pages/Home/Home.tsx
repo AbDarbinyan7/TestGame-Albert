@@ -1,17 +1,19 @@
-import React, { useState, useContext } from "react";
-import { useRouter } from "next/router";
+import React, { useContext } from "react";
 import styled from "@emotion/styled";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import Link from "next/link";
 
-import AscDesc, {
-  DIRECTIONS,
-} from "../../components/AscDescContainer/AscDescContainer";
-import { countMarks, valueMarks } from "./HomeData";
+import AscDesc from "../../components/AscDescContainer/AscDescContainer";
 import StartGameButton from "../../components/StartGameButton/StartGameButton";
-import { CountContext, ValueContext, DirectionContext } from "../../Context";
 import MainGameBoard from "../../components/Game";
+
+import { countMarks, valueMarks } from "./HomeData";
+import {
+  CountContext,
+  ValueContext,
+  DirectionContext,
+  GameStartedContext,
+} from "../../Context";
 
 import "rsuite/dist/rsuite.min.css";
 
@@ -57,16 +59,10 @@ const Home: React.FC = () => {
   const { selectedValue, setSelectedValue } = useContext<any>(ValueContext);
   const { selectedDirection, setSelectedDirection } =
     useContext<any>(DirectionContext);
-  const [gameStarted, setGameStarted] = useState<boolean>(false);
-
-  const router = useRouter();
-
-  function valuetext(value: number) {
-    return `${value}°C`;
-  }
+  const { gameStarted, setGameStarted } = useContext<any>(GameStartedContext);
 
   function valueLabelFormat(value: number) {
-    return valueMarks.findIndex((mark) => mark.value === value) + 1;
+    return valueMarks.findIndex((mark: SingleMark) => mark.value === value) + 1;
   }
 
   function handleFindValue(val: number | number[]) {
@@ -77,7 +73,7 @@ const Home: React.FC = () => {
     setSelectedValue(selectedVal);
   }
 
-  function handleStartGame(type: void) {
+  function handleStartGame(): void {
     setGameStarted(true);
   }
 
@@ -102,7 +98,6 @@ const Home: React.FC = () => {
                 aria-label="Small steps"
                 defaultValue={2}
                 step={1}
-                getAriaValueText={valuetext}
                 marks={countMarks}
                 min={2}
                 max={5}
@@ -137,7 +132,7 @@ const Home: React.FC = () => {
           />
         </Box>
 
-        <StartGameButton onClick={handleStartGame} />
+        <StartGameButton onClick={handleStartGame} text="Играть" />
       </GameControls>
     </Container>
   );

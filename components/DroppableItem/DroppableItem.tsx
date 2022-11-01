@@ -76,7 +76,7 @@ const DroppableItem = memo(function DroppableItem({
               " 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000",
           }}
         >
-          {item.number}
+          {item.value}
         </h1>
       )}
     </div>

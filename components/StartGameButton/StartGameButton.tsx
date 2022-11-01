@@ -3,10 +3,12 @@ import styled from "@emotion/styled";
 
 interface StartButtonInterface {
   onClick: any;
+  text?: string;
+  bgColor?: string;
 }
 
-const Button = styled.button({
-  background: "#38DF7A",
+const Button = styled.button((props: StartButtonInterface) => ({
+  background: props.bgColor || "#38DF7A",
   fontFamily: "Helvetica",
   fontSize: "32px",
   borderRadius: "20px",
@@ -21,12 +23,18 @@ const Button = styled.button({
   [`:active`]: {
     background: "#2bad5e",
   },
-});
+}));
 
 const StartGameButton: React.FC<StartButtonInterface> = ({
   onClick,
+  text,
+  bgColor,
 }: StartButtonInterface) => {
-  return <Button onClick={onClick}>Играть</Button>;
+  return (
+    <Button bgColor={bgColor} onClick={onClick}>
+      {text}
+    </Button>
+  );
 };
 
 export default StartGameButton;
