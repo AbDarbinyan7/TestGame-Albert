@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import type { AppProps } from "next/app";
 
 import {
@@ -10,16 +10,17 @@ import {
 import { valueMarks } from "./Home/HomeData";
 import Sound from "../components/Sound/Sound";
 import { DIRECTIONS } from "../components/AscDescContainer/AscDescContainer";
+import { SingleMark } from "./Home/Home";
 
 import "../styles/globals.css";
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [selectedCount, setSelectedCount] = useState<any>(2);
-  const [selectedValue, setSelectedValue] = useState<any>(valueMarks[0]);
-  const [selectedDirection, setSelectedDirection] = useState<any>(
+  const [selectedCount, setSelectedCount] = useState<number>(2);
+  const [selectedValue, setSelectedValue] = useState<SingleMark>(valueMarks[0]);
+  const [selectedDirection, setSelectedDirection] = useState<string>(
     DIRECTIONS.ASC
   );
-  const [gameStarted, setGameStarted] = useState<any>(false);
+  const [gameStarted, setGameStarted] = useState<boolean>(false);
 
   return (
     <React.Fragment>

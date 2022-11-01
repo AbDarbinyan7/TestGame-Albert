@@ -1,5 +1,32 @@
 import { memo } from "react";
 import { useDrop } from "react-dnd";
+import styled from "@emotion/styled";
+import { SingleBoardInterface, SingleThemeInterface } from "../Game";
+
+interface DropBoxInterface {
+  isActive: boolean;
+  selectedTheme: SingleThemeInterface;
+  item: SingleBoardInterface;
+}
+
+const DropBox = styled.div((props: DropBoxInterface) => ({
+  width: 131,
+  height: 131,
+  overflow: "hidden",
+  backgroundColor: props.isActive ? "lightgreen" : "initial",
+  backgroundImage: props.item.isDropped
+    ? `url(/Images/${props.selectedTheme?.folderName}/Icon${
+        props.item.id + 1
+      }.png)`
+    : "initial",
+  backgroundSize: "90%",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "center center",
+  transform: "translate(0,0)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+}));
 
 const DroppableItem = memo(function DroppableItem({
   accept = [],
@@ -26,23 +53,12 @@ const DroppableItem = memo(function DroppableItem({
   }
 
   return (
-    <div
+    <DropBox
+      isActive={isActive}
+      selectedTheme={selectedTheme}
+      item={item}
       ref={drop}
       style={{
-        width: 131,
-        height: 131,
-        overflow: "hidden",
-        backgroundColor,
-        backgroundImage: item.isDropped
-          ? `url(/Images/${selectedTheme?.folderName}/Icon${item.id + 1}.png)`
-          : "initial",
-        backgroundSize: "90%",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center center",
-        transform: "translate(0,0)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
         borderRadius,
       }}
     >
@@ -58,7 +74,7 @@ const DroppableItem = memo(function DroppableItem({
           {item.value}
         </h1>
       )}
-    </div>
+    </DropBox>
   );
 });
 

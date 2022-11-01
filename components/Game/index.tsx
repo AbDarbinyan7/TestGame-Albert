@@ -229,7 +229,7 @@ const Game: React.FC = () => {
       // Generate for numbers
       if (selectedValue.type !== 0) {
         for (let i = 0; i < selectedCount; i++) {
-          let newValue = onGenerateBoardForNumbers(newArr, i, false);
+          let newValue = onGenerateBoardForNumbers(newArr, i);
           newArr.push(newValue);
         }
         // Generate for letters
@@ -296,12 +296,15 @@ const Game: React.FC = () => {
     setDroppedBoards(arrayForDroppedBoards);
   }, []);
 
-  function onGenerateBoardForLetters(arr: any, i: number) {
-    let newObj: SingleBoardInterface | null = null;
+  function onGenerateBoardForLetters(
+    arr: any,
+    i: number
+  ): { id: number; value: string } | {} {
+    let newObj: SingleBoardInterface | {} = {};
     onCheckHaveDublicate();
 
     function onCheckHaveDublicate(): void {
-      let RandomNumber = generateRandomNumber("31");
+      let RandomNumber = generateRandomNumber(Ruletters.length - 1);
       const selectedLetter = Ruletters[RandomNumber];
       let hasDublicate = arr.find((el: any) => el.value === selectedLetter);
       if (hasDublicate) {
@@ -317,11 +320,7 @@ const Game: React.FC = () => {
     return newObj;
   }
 
-  function onGenerateBoardForNumbers(
-    arr: any,
-    i: number,
-    isWithLetters: boolean = false
-  ) {
+  function onGenerateBoardForNumbers(arr: any, i: number) {
     let newObj: SingleBoardInterface | null = null;
     onCheckHaveDublicate();
 
@@ -341,7 +340,7 @@ const Game: React.FC = () => {
     return newObj;
   }
 
-  function generateRandomNumber(num: string) {
+  function generateRandomNumber(num: string | number) {
     return Math.floor(Math.random() * +num) + 1;
   }
 
@@ -383,10 +382,9 @@ const Game: React.FC = () => {
       >
         {IsWinGame && <WinGame />}
         <NumbersBoxContainer>
-          {boards.map((board, index) => {
-            const currentDroppedBoard = droppedBoards.find(
-              (b) => b.id === board.id
-            );
+          {boards.map((board: SingleBoardInterface, index: number) => {
+            const currentDroppedBoard: SingleBoardInterface | undefined =
+              droppedBoards.find((b) => b.id === board.id);
             return (
               <DraggablItem
                 key={index.toString()}
@@ -409,7 +407,7 @@ const Game: React.FC = () => {
                 : "По убыванию"}
             </p>
           </AscDescBox>
-          {boards.map((board, i) => (
+          {boards.map((i) => (
             <div
               key={i.toString()}
               style={{
@@ -431,13 +429,14 @@ const Game: React.FC = () => {
               gap: 5,
               alignItems: "center",
             }}
-            // ref={drop}
           >
-            {droppedBoards.map((board, i) => (
+            {droppedBoards.map((board: SingleBoardInterface, i: number) => (
               <DroppableItem
                 accept={[board.value.toString()]}
                 key={i.toString()}
-                onDrop={(item: any) => handleDrop(i, item, droppedBoards)}
+                onDrop={(item: SingleBoardInterface) =>
+                  handleDrop(i, item, droppedBoards)
+                }
                 item={board}
                 selectedTheme={selectedTheme}
               />

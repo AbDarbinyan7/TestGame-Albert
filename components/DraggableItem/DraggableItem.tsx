@@ -1,20 +1,9 @@
-import type { CSSProperties } from "react";
 import { useState } from "react";
 import styled from "@emotion/styled";
 import { memo } from "react";
 import { useDrag } from "react-dnd";
 
-import { SingleThemeInterface, SingleBoardInterface } from "../Game/index";
-
-const style: CSSProperties = {
-  border: "1px dashed gray",
-  backgroundColor: "white",
-  padding: "0.5rem 1rem",
-  marginRight: "1.5rem",
-  marginBottom: "1.5rem",
-  cursor: "move",
-  float: "left",
-};
+import { SingleBoardInterface } from "../Game/index";
 
 interface BoxInterface {
   selectedTheme: any;
@@ -112,12 +101,7 @@ const DraggableItem = memo(function Box({
   }
 
   return (
-    <Wrapper
-      style={{
-        position: "relative",
-      }}
-      className={`item-container item-container-${i + 1}`}
-    >
+    <Wrapper className={`item-container item-container-${i + 1}`}>
       <DraggableBox
         ref={!isDropped ? drag : null}
         data-testid="box"
@@ -148,7 +132,7 @@ const DraggableItem = memo(function Box({
           }}
           src={`/Images/${selectedTheme.folderName}/branch${i + 1}.png`}
           alt=""
-        ></img>
+        />
       ) : (
         ""
       )}

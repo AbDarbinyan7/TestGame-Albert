@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import Confetti from "react-confetti";
 
@@ -11,6 +11,7 @@ import {
 import StarIcon from "../StarIcon/StarIcon";
 import StartGameButton from "../StartGameButton/StartGameButton";
 import { valueMarks } from "../../pages/Home/HomeData";
+import { DIRECTIONS } from "../AscDescContainer/AscDescContainer";
 
 const ModalContainer = styled.div(() => ({
   width: "100%",
@@ -57,25 +58,33 @@ const WinGame = () => {
   const { selectedDirection, setSelectedDirection } =
     useContext<any>(DirectionContext);
   const { gameStarted, setGameStarted } = useContext<any>(GameStartedContext);
-  let audio = new Audio("Sounds/claps-sound.mp3");
+  const [audio] = useState(
+    typeof Audio !== "undefined" && new Audio("Sounds/claps-sound.mp3")
+  );
+
   useEffect(() => {
     playWinnerMusic();
 
     return () => {
-      audio.pause();
-      audio.currentTime = 0;
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
     };
   }, []);
 
   function playWinnerMusic() {
-    audio.play();
-    audio.volume = 0.3;
+    if (audio) {
+      audio.play();
+      audio.volume = 0.3;
+    }
   }
 
   function handleRestartGame() {
     setSelectedCount(2);
     setSelectedValue(valueMarks[0]);
     setGameStarted(false);
+    setSelectedDirection(DIRECTIONS.ASC);
   }
   return (
     <ModalContainer>

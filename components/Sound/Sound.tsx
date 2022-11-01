@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from "react";
-import "@fortawesome/fontawesome-svg-core/styles.css"; // import Font Awesome CSS
 import { config } from "@fortawesome/fontawesome-svg-core";
-config.autoAddCss = false;
+import styled from "@emotion/styled";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSearch,
-  faAmbulance,
-  faAnchor,
-  faVolumeHigh,
-  faVolumeMute,
-} from "@fortawesome/free-solid-svg-icons";
+import { faVolumeHigh, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
+
+import "@fortawesome/fontawesome-svg-core/styles.css"; // import Font Awesome CSS
+config.autoAddCss = false;
+
+const SoundBox = styled.div(() => ({
+  position: "absolute",
+  right: 20,
+  top: 20,
+  color: "#fff",
+  fontSize: 20,
+  zIndex: "9999999",
+}));
 
 const Sound = () => {
   const [playMusic, setPlayMusic] = useState<boolean>(false);
@@ -34,21 +40,12 @@ const Sound = () => {
   }
 
   return (
-    <div
-      style={{
-        position: "absolute",
-        right: 20,
-        top: 20,
-        color: "#fff",
-        fontSize: 20,
-      }}
-      onClick={() => setPlayMusic((prev) => !prev)}
-    >
+    <SoundBox onClick={() => setPlayMusic((prev) => !prev)}>
       <FontAwesomeIcon
         icon={playMusic ? faVolumeHigh : faVolumeMute}
         style={{ fontSize: 60, color: "#fff" }}
       />
-    </div>
+    </SoundBox>
   );
 };
 
