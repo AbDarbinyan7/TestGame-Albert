@@ -200,6 +200,9 @@ const Game: React.FC = () => {
   const { selectedValue, setSelectedValue } = useContext<any>(ValueContext);
   const { selectedDirection, setSelectedDirection } =
     useContext<any>(DirectionContext);
+  const [successAudio] = useState(
+    typeof Audio !== "undefined" && new Audio("Sounds/success-sound.mp3")
+  );
 
   const Ruletters = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЫЬЭЮЯ";
 
@@ -357,10 +360,19 @@ const Game: React.FC = () => {
         return board;
       });
 
+      handlePlaySliderMoveAudio();
       setDroppedBoards(newDroppedBoards);
     },
     []
   );
+
+  function handlePlaySliderMoveAudio(): void {
+    if (successAudio) {
+      successAudio.pause();
+      successAudio.currentTime = 0;
+      successAudio?.play();
+    }
+  }
 
   return (
     <DndProvider backend={HTML5Backend}>

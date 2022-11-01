@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styled from "@emotion/styled";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
@@ -60,6 +60,9 @@ const Home: React.FC = () => {
   const { selectedDirection, setSelectedDirection } =
     useContext<any>(DirectionContext);
   const { gameStarted, setGameStarted } = useContext<any>(GameStartedContext);
+  const [audio] = useState(
+    typeof Audio !== "undefined" && new Audio("Sounds/woof-sound.mp3")
+  );
 
   function valueLabelFormat(value: number) {
     return valueMarks.findIndex((mark: SingleMark) => mark.value === value) + 1;
@@ -69,12 +72,20 @@ const Home: React.FC = () => {
     let selectedVal: SingleMark | undefined = valueMarks.find(
       (mark: SingleMark) => mark.value === val
     );
-
+    handlePlaySliderMoveAudio();
     setSelectedValue(selectedVal);
   }
 
   function handleStartGame(): void {
     setGameStarted(true);
+  }
+
+  function handlePlaySliderMoveAudio(): void {
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+      audio?.play();
+    }
   }
 
   if (gameStarted) {
@@ -94,7 +105,10 @@ const Home: React.FC = () => {
             <p>Кол-во предметов</p>
             <Box sx={{ width: 366, margin: "0 auto" }}>
               <Slider
-                onChange={(event, value, thumb) => setSelectedCount(value)}
+                onChange={(event, value, thumb) => {
+                  handlePlaySliderMoveAudio();
+                  setSelectedCount(value);
+                }}
                 aria-label="Small steps"
                 defaultValue={2}
                 step={1}
@@ -127,7 +141,10 @@ const Home: React.FC = () => {
             </Box>
           </Box>
           <AscDesc
-            onClick={setSelectedDirection}
+            onClick={(direction: string) => {
+              handlePlaySliderMoveAudio();
+              setSelectedDirection(direction);
+            }}
             selectedDirection={selectedDirection}
           />
         </Box>

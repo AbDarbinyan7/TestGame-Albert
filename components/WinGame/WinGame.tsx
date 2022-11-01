@@ -1,5 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import styled from "@emotion/styled";
+import Confetti from "react-confetti";
+
 import {
   CountContext,
   DirectionContext,
@@ -39,32 +41,25 @@ const Modal = styled.div(() => ({
   position: "relative",
 }));
 
-const FirstStar = styled.img(() => ({
-  position: "absolute",
-  left: "-50px",
-  top: "-50px",
-}));
-
-const SecondStar = styled.img(() => ({
-  position: "absolute",
-  right: "-78px",
-  top: "108px",
-  height: "242px",
-}));
-
-const ThiredStart = styled.img(() => ({
-  position: "absolute",
-  right: "-78px",
-  top: "108px",
-  height: "242px",
-}));
-
 const WinGame = () => {
   const { selectedCount, setSelectedCount } = useContext<any>(CountContext);
   const { selectedValue, setSelectedValue } = useContext<any>(ValueContext);
   const { selectedDirection, setSelectedDirection } =
     useContext<any>(DirectionContext);
   const { gameStarted, setGameStarted } = useContext<any>(GameStartedContext);
+  let audio = new Audio("Sounds/winner-sound.mp3");
+  useEffect(() => {
+    playWinnerMusic();
+
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+    };
+  }, []);
+
+  function playWinnerMusic() {
+    audio.play();
+  }
 
   function handleRestartGame() {
     setSelectedCount(2);
@@ -73,6 +68,7 @@ const WinGame = () => {
   }
   return (
     <ModalContainer>
+      <Confetti width={window.innerWidth} height={window.innerHeight} />
       <Modal>
         <StarIcon top="-50px" left="-50px" />
         <StarIcon top="108px" right="-78px" size="large" />
@@ -90,7 +86,6 @@ const WinGame = () => {
 
           <p
             style={{
-              // marginTop: "27px",
               maxWidth: "520px",
             }}
           >

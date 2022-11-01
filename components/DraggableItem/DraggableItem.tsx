@@ -80,7 +80,7 @@ const DraggableItem = memo(function Box({
         backgroundImage: isDropped
           ? "initial"
           : `url(/Images/${selectedTheme?.folderName}/Icon${i + 1}.png)`,
-        backgroundSize: "100%",
+        backgroundSize: "contain",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center center",
         transform: "translate(0,0)",

@@ -21,29 +21,15 @@ const DroppableItem = memo(function DroppableItem({
   const isActive = isOver && canDrop;
   let backgroundColor = "transparent";
   let borderRadius = "initial";
+
   if (isActive) {
-    backgroundColor = "gray";
+    backgroundColor = "lightgreen";
     borderRadius = "50%";
-  }
-  // else if (canDrop) {
-  //   backgroundColor = "darkkhaki";
-  // }
-
-  {
-    /* {isActive
-        ? "Release to drop"
-        : `This dustbin accepts: ${accept.join(", ")}`}
-
-      {lastDroppedItem && (
-        <p>Last dropped: {JSON.stringify(lastDroppedItem)}</p>
-      )} */
   }
 
   return (
     <div
       ref={drop}
-      // ref={(drop) => (itemsRef.current[i] = drop)}
-      className={`gago`}
       onDragOver={(e) => {}}
       onDragLeave={(e) => {}}
       onDragStart={(e) => {}}
