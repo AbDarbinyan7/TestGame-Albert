@@ -27,29 +27,29 @@ a {
 }
 
 .MuiSlider-rail {
-  height: 21px;
-  background: #ffd748;
-  opacity: 1;
+  height: 21px !important;
+  background: #ffd748 !important;
+  opacity: 1 !important;
 }
 
 .MuiSlider-thumb {
-  background: #104987;
+  background: #104987 !important;
 }
 
 .MuiSlider-track {
-  display: none;
+  display: none !important;
 }
 
 .MuiSlider-mark {
-  display: none;
+  display: none !important;
 }
 
 .MuiSlider-markLabel {
-  font-size: 24px;
-  font-weight: 700;
-  font-family: "Calibri";
-  color: #4f4b61;
-  top: -30px;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  font-family: "Calibri" !important;
+  color: #4f4b61 !important;
+  top: -30px !important;
 }
 
 /* width */
