@@ -20,6 +20,10 @@ const ModalContainer = styled.div(() => ({
   top: "0",
   bottom: "0",
   zIndex: "999999",
+  minHeight: "100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
 }));
 
 const Modal = styled.div(() => ({
@@ -34,7 +38,6 @@ const Modal = styled.div(() => ({
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "space-around",
-  margin: "160px auto",
   color: "#5F40A1",
   fontSize: "40px",
   textAlign: "center",
