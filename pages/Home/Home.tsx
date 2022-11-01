@@ -7,7 +7,7 @@ import AscDesc from "../../components/AscDescContainer/AscDescContainer";
 import StartGameButton from "../../components/StartGameButton/StartGameButton";
 import MainGameBoard from "../../components/Game";
 
-import { countMarks, valueMarks } from "./HomeData";
+import { countMarks, valueMarks } from "../../HomeData";
 import {
   CountContext,
   ValueContext,

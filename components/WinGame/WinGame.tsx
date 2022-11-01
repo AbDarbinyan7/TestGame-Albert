@@ -10,7 +10,7 @@ import {
 } from "../../Context";
 import StarIcon from "../StarIcon/StarIcon";
 import StartGameButton from "../StartGameButton/StartGameButton";
-import { valueMarks } from "../../pages/Home/HomeData";
+import { valueMarks } from "../../HomeData";
 import { DIRECTIONS } from "../AscDescContainer/AscDescContainer";
 
 const ModalContainer = styled.div(() => ({

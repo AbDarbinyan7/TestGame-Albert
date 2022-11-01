@@ -1,4 +1,4 @@
-import { SingleMark } from "./Home";
+import { SingleMark } from "./pages/Home/Home";
 
 export const countMarks: SingleMark[] = [
   {

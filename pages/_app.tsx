@@ -7,7 +7,7 @@ import {
   DirectionContext,
   GameStartedContext,
 } from "../Context";
-import { valueMarks } from "./Home/HomeData";
+import { valueMarks } from "../HomeData";
 import Sound from "../components/Sound/Sound";
 import { DIRECTIONS } from "../components/AscDescContainer/AscDescContainer";
 import { SingleMark } from "./Home/Home";
